@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin page</title>
+</head>
+<body>
+
+<div th:each="person : ${persons}">
+    <br/>
+    <a th:text="${person.getId() + ', ' + person.getEmail()}"
+       th:style="'font-weight: bold;'">person</a>
+</div>
+
+<br/>
+<hr/>
+
+<br/>
+<!--<form th:action="@{/partner/new}">-->
+<!--    <input type="submit" value="Добавить торговую точку"/>-->
+<!--</form>-->
+<br/>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your own page</title>
+</head>
+<body>
+<p th:text="${partner.getPartnerName() + ', ' + partner.getPartnerAddress()}">VALUE</p>
+
+</body>
+</html>

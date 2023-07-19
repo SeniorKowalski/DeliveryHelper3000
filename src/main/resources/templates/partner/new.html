@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New partner</title>
+</head>
+<body>
+
+<h2>Добавить торговую точку</h2>
+
+<form th:method="POST" th:action="@{/partner/new}" th:object="${partner}">
+    <br/>
+    <label for="partnerName">Введите название торговой точки:</label>
+    <input type="text" th:field="*{partnerName}" id="partnerName">
+    <div style="color:red" th:if="${#fields.hasErrors('partnerName')}" th:errors="*{partnerName}">Name error</div>
+    <br/>
+    <br/>
+    <label for="partnerName">Введите адрес торговой точки:</label>
+    <input type="text" th:field="*{partnerAddress}" id="partnerAddress">
+    <div style="color:red" th:if="${#fields.hasErrors('partnerAddress')}" th:errors="*{partnerAddress}">Name error</div>
+    <br/>
+
+    <input type="submit" value="Добавить!"/>
+    <br/>
+</form>
+</body>
+</html>

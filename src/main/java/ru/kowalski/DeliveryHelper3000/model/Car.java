@@ -1,20 +1,25 @@
 package ru.kowalski.DeliveryHelper3000.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Car {
 
-    private String carId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long carId;
+    @Column(name = "car_number")
+    private String carNumber;
+    @Column(name = "car_capacity")
     private int carCapacity;
-    private int[] baskets;
 
-    public Car(String carId, int carCapacity, int[] baskets) {
-        this.carId = carId;
-        this.carCapacity = carCapacity;
-        this.baskets = new int[carCapacity];
-    }
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Order> orders;
 }

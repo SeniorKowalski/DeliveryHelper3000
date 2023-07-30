@@ -14,6 +14,7 @@ import ru.kowalski.DeliveryHelper3000.util.PartnerNotFoundException;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +29,16 @@ public class PartnerService {
         return partnerRepository.findAllByPersonId(person.getId());
     }
 
-    public Partner findOne(Long id){
+    public Partner findPartnerById(Long partnerId){
         Person person = getCurrentPerson();
         return partnerRepository.findAllByPersonId(person.getId()).stream()
-                .filter(partner -> Objects.equals(partner.getId(), id))
+                .filter(partner -> Objects.equals(partner.getId(), partnerId))
                 .findAny().orElseThrow(PartnerNotFoundException::new);
+    }
+
+    public List <Partner> findAllPartnersByPersonId(){
+        Person person = getCurrentPerson();
+        return partnerRepository.findAllByPersonId(person.getId());
     }
 
     @Transactional

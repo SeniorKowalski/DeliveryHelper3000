@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 
 @Entity
@@ -25,17 +24,18 @@ public class Product {
     @Column(name = "product_name")
     private String productName;
 
-    @NotEmpty(message = "Нужно указать цену продукта")
-    @Size(min = 1, max = 64)
+    @NotNull(message = "Нужно указать цену продукта")
+    @Min(value = 1, message = "Цена продуктов должна быть больше нуля")
     @Column(name = "product_price")
-    private int productPrice;
+    private double productPrice;
 
-    @NotEmpty()
-    @Size(min = 1, max = 3)
+    @NotNull(message = "Нужно указать размер продукта")
+    @Min(value = 1, message = "Размер продуктов в % должен быть больше нуля")
+    @Max(value = 100, message = "Размер продуктов в % не может превышать 100")
     @Column(name = "product_size")
     private double productSize;
 
-    @Size(min = 1, max = 64)
+    @Min(value = 1, message = "Количество продуктов должно быть больше нуля")
     @Column(name = "product_quantity")
     private int productQuantity;
 

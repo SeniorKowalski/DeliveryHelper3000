@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Product> orderedProducts;
 
     @ManyToOne
@@ -26,10 +28,13 @@ public class Order {
     private Car car;
 
     @Column(name = "order_date_time")
-    private Long orderDateTime;
+    private LocalDateTime orderDateTime;
 
-    @Column(name = "delivery_date_time")
-    private Long deliveryDateTime;
+    @Column(name = "delivery_date_time_start")
+    private LocalDateTime deliveryTimeWindowStart;
+
+    @Column(name = "delivery_date_time_end")
+    private LocalDateTime deliveryTimeWindowEnd;
 
     @ManyToOne
     @JoinColumn(name = "partner_id")

@@ -6,11 +6,12 @@ import ru.kowalski.DeliveryHelper3000.model.Product;
 import ru.kowalski.DeliveryHelper3000.repository.ProductRepository;
 import ru.kowalski.DeliveryHelper3000.util.ProductNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServise {
+public class ProductService {
 
     private final ProductRepository productRepository;
     private final OrderService orderService;
@@ -37,4 +38,11 @@ public class ProductServise {
         return orderService.findOrderById(orderId).getOrderedProducts();
     }
 
+    public List<Product> getProductsByIds(List<Long> productIds) {
+        List<Product> products = new ArrayList<>();
+        for (Long productId : productIds) {
+            products.add(productRepository.findById(productId).orElseThrow(ProductNotFoundException::new));
+        }
+        return products;
+    }
 }

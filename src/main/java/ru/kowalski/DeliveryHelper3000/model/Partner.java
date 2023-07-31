@@ -28,13 +28,18 @@ public class Partner {
     @Column(name = "partner_address")
     private String partnerAddress;
 
-    @Column(name = "partner_coordinates")
-    private String partnerCoordinates;
+    @Column(name = "partner_latitude")
+    private double latitude;
+
+    @Column(name = "partner_longitude")
+    private double longitude;
+
+    private int timeForDeliveryInMinutes;
 
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
 
-    @OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "partner", cascade = CascadeType.DETACH, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Order> orders;
 }

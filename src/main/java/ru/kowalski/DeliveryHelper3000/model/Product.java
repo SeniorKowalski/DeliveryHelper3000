@@ -3,13 +3,13 @@ package ru.kowalski.DeliveryHelper3000.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 
 @Entity
+@Table(name = "product")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,15 +27,15 @@ public class Product {
     @NotNull(message = "Нужно указать цену продукта")
     @Min(value = 1, message = "Цена продуктов должна быть больше нуля")
     @Column(name = "product_price")
-    private double productPrice;
+    private Double productPrice;
 
     @NotNull(message = "Нужно указать размер продукта")
     @Min(value = 1, message = "Размер продуктов в % должен быть больше нуля")
     @Max(value = 100, message = "Размер продуктов в % не может превышать 100")
     @Column(name = "product_size")
-    private double productSize;
+    private Double productSize;
 
-    @Min(value = 1, message = "Количество продуктов должно быть больше нуля")
+//    @Min(value = 1, message = "Количество продуктов должно быть больше нуля")
     @Column(name = "product_quantity")
     private int productQuantity;
 

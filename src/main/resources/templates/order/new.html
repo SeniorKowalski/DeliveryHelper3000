@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New order</title>
+</head>
+<body>
+
+<h2>Оформление заказа</h2>
+
+<form th:method="POST" th:action="@{/order/new}" th:object="${order}">
+    <br/>
+    <label for="carNumber">Введите номер автомобиля:</label>
+    <input type="text" th:field="*{carNumber}" id="carNumber">
+    <div style="color:red" th:if="${#fields.hasErrors('carNumber')}" th:errors="*{carNumber}">Number error</div>
+    <br/>
+    <br/>
+    <label for="carCapacity">Введите вместительность автомобиля(в лотках):</label>
+    <input type="text" th:field="*{carCapacity}" id="carCapacity">
+    <div style="color:red" th:if="${#fields.hasErrors('carCapacity')}" th:errors="*{carCapacity}">Capacity error</div>
+    <br/>
+
+    <input type="submit" value="Добавить!"/>
+    <br/>
+</form>
+
+<form th:method="POST" th:action="@{/order/new/{id}(id=${book.getBookId()})}">
+    <label for="person">Выберите продукт</label>
+    <br/>
+    <select id="person"
+            th:field="*{id}"
+            th:object="${person}">
+        <option th:each="person : ${people}"
+                th:value="${person.getId()}"
+                th:text="${person.getName()}">
+        </option>
+    </select>
+    <hr/>
+    <input type="submit" value="Добавить к заказу"/>
+</form>
+</body>
+</html>

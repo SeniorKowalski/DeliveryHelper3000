@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "orders")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    private Long id;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Product> orderedProducts;
@@ -39,5 +40,15 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "partner_id")
     private Partner partner;
+
+    public void addProductToOrder(Product product){
+        product.setOrder(this);
+        orderedProducts.add(product);
+    }
+
+    public void deleteProductFromOrder(Product product){
+        orderedProducts.remove(product);
+        product.setOrder(null);
+    }
 
 }

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Car page</title>
+</head>
+<body>
+<p th:text="${car.getCarNumber() + ' - ' + car.getCarCapacity() + ' лотков.'}">VALUE</p>
+<br/>
+<form th:action="@{/car/edit}">
+    <input type="submit" value="Изменить данные об автомобиле"/>
+</form>
+<br/>
+
+</body>
+</html>

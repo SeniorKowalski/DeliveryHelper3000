@@ -5,29 +5,20 @@
     <title>Edit</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/address}" th:object="${address}">
+<form th:method="POST" th:action="@{/partner/new}" th:object="${partner}">
     <br/>
-    <label for="city">Введите город:</label>
-    <input type="text" th:field="*{city}" id="city">
-    <div style="color:red" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">Age error</div>
-    <br>
+    <label for="partnerName">Введите название торговой точки:</label>
+    <input type="text" th:field="*{partnerName}" id="partnerName">
+    <div style="color:red" th:if="${#fields.hasErrors('partnerName')}" th:errors="*{partnerName}">Name error</div>
     <br/>
-    <label for="district">Введите район:</label>
-    <input type="text" th:field="*{district}" id="district">
-    <div style="color:red" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">Age error</div>
-    <br>
     <br/>
-    <label for="address">Введите улицу и номер дома:</label>
-    <input type="text" th:field="*{address}" id="address">
-    <div style="color:red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Age error</div>
-    <br>
+    <label for="partnerName">Введите адрес торговой точки:</label>
+    <input type="text" th:field="*{partnerAddress}" id="partnerAddress">
+    <div style="color:red" th:if="${#fields.hasErrors('partnerAddress')}" th:errors="*{partnerAddress}">Name error</div>
     <br/>
-    <label for="coordinates">Введите координаты:</label>
-    <input type="text" th:field="*{coordinates}" id="coordinates">
-    <div style="color:red" th:if="${#fields.hasErrors('coordinates')}" th:errors="*{coordinates}">Age error</div>
-    <br>
 
     <input type="submit" value="Добавить!"/>
     <br/>
+</form>
 </body>
 </html>

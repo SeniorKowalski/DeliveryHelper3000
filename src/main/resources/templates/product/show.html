@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product page</title>
+</head>
+<body>
+<p th:text="${product.getProductName() + ' - ' + product.getPrice() + ' рублей. Размер: ' + product.getSize()}">VALUE</p>
+<br/>
+<form th:action="@{/product/edit}">
+    <input type="submit" value="Изменить продукт"/>
+</form>
+<br/>
+
+</body>
+</html>

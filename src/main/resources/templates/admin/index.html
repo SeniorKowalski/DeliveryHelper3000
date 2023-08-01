@@ -13,7 +13,29 @@
     <a th:text="${person.getId() + ', ' + person.getEmail()}"
        th:style="'font-weight: bold;'">person</a>
 </div>
+<hr/>
 
+
+<div th:each="product : ${products}">
+    <br/>
+    <a th:text="${product.getProductName() + ' - ' + product.getProductPrice() + ' рублей. Размер: ' + product.getProductSize()}"
+       th:style="'font-weight: bold;'">product</a>
+</div>
+<br/>
+<form th:action="@{/product/new}">
+    <input type="submit" value="Добавить продукт"/>
+</form>
+<br/>
+<hr/>
+<div th:each="car : ${cars}">
+    <br/>
+    <a th:text="${car.getCarNumber() + ' - ' + car.getCarCapacity() + ' лотков.'}"
+       th:style="'font-weight: bold;'">car</a>
+</div>
+<br/>
+<form th:action="@{/car/new}">
+    <input type="submit" value="Добавить автомобиль"/>
+</form>
 <br/>
 <hr/>
 

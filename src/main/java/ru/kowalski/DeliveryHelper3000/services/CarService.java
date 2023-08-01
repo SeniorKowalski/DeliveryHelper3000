@@ -6,6 +6,8 @@ import ru.kowalski.DeliveryHelper3000.model.Car;
 import ru.kowalski.DeliveryHelper3000.repository.CarRepository;
 import ru.kowalski.DeliveryHelper3000.util.CarNotFoundException;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CarService {
@@ -26,7 +28,11 @@ public class CarService {
         carRepository.deleteById(car.getCarId());
     }
 
-    public Car getCarById(Long carId) {
+    public Car findCarById(Long carId) {
         return carRepository.findById(carId).orElseThrow(CarNotFoundException::new);
+    }
+
+    public List<Car> findAllCars(){
+        return carRepository.findAll();
     }
 }

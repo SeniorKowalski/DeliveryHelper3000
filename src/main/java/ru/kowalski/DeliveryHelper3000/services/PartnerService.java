@@ -23,7 +23,6 @@ public class PartnerService {
 
     private final PartnerRepository partnerRepository;
 
-
     public List<Partner> findAll(){
         Person person = getCurrentPerson();
         return partnerRepository.findAllByPersonId(person.getId());

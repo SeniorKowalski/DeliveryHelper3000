@@ -24,7 +24,8 @@ public class AdminController {
     @GetMapping
     public String adminPage(Model model){
         model.addAttribute("persons", adminService.getAllPersons());
+        model.addAttribute("products", adminService.getAllProducts());
+        model.addAttribute("cars", adminService.getAllCars());
         return "/admin/index";
     }
-
 }

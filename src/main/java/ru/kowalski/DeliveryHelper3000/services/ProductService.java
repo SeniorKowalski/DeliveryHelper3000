@@ -8,13 +8,18 @@ import ru.kowalski.DeliveryHelper3000.util.ProductNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final OrderService orderService;
+//    private final OrderService orderService;
+
+    public List<Product> getAllProducts(){
+        return productRepository.findAll();
+    }
 
     public Product findProductById(Long id){
         return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
@@ -34,9 +39,10 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public List<Product> findProductsByOrderId(Long orderId){
-        return orderService.findOrderById(orderId).getOrderedProducts();
-    }
+//    public List<Product> findProductsByOrderId(Long orderId){
+//        return orderService.findOrderById(orderId).getOrderedProducts();
+//    }
+    //TODO убрать цикличную зависимость
 
     public List<Product> getProductsByIds(List<Long> productIds) {
         List<Product> products = new ArrayList<>();

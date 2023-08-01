@@ -40,10 +40,15 @@ public class PartnerController {
 
     @GetMapping("/show/{id}")
     public String showPartner(@PathVariable("id") Long id,Model model){
-        model.addAttribute("partner",partnerService.findOne(id));
+        model.addAttribute("partner",partnerService.findPartnerById(id));
         return "/partner/show";
     }
 
+    @GetMapping("/edit/{id}")
+    public String editPartner(@PathVariable("id") Long id,Model model){
+        model.addAttribute("partner",partnerService.findPartnerById(id));
+        return "/partner/edit";
+    }
 
     private Person getCurrentPerson() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

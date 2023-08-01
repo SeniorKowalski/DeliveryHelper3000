@@ -29,11 +29,12 @@ public class Partner {
     private String partnerAddress;
 
     @Column(name = "partner_latitude")
-    private double latitude;
+    private Double latitude;
 
     @Column(name = "partner_longitude")
-    private double longitude;
+    private Double longitude;
 
+    @Column(name = "time_for_delivery_in_minutes")
     private int timeForDeliveryInMinutes;
 
     @ManyToOne

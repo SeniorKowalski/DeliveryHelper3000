@@ -2,7 +2,6 @@ package ru.kowalski.DeliveryHelper3000.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.kowalski.DeliveryHelper3000.model.Car;
 import ru.kowalski.DeliveryHelper3000.model.Order;
 import ru.kowalski.DeliveryHelper3000.model.Partner;
 import ru.kowalski.DeliveryHelper3000.model.Product;
@@ -21,32 +20,31 @@ public class OrderService {
     private final ProductService productService;
     private final CarService carService;
 
-    public void createNewOrder(Partner partner, List<Long> productIds, Long carId, LocalDateTime deliveryDateTime){
+    public void createNewOrder(Long partnerId, List<Long> productIds, LocalDateTime deliveryTimeWindowStart, LocalDateTime deliveryTimeWindowEnd){
 
         Order order = new Order();
 
         List<Product> products = productService.getProductsByIds(productIds);
         order.setOrderedProducts(products);
 
-        order.setDeliveryDateTime(deliveryDateTime);
+        order.setDeliveryTimeWindowStart(deliveryTimeWindowStart);
+        order.setDeliveryTimeWindowEnd(deliveryTimeWindowEnd);
 
+        Partner partner = partnerService.findPartnerById(partnerId);
         order.setPartner(partner);
-
-        Car car = carService.getCarById(carId);
-        order.setCar(car);
 
         order.setOrderDateTime(LocalDateTime.now());
         orderRepository.save(order);
     }
 
     public void updateOrder(Order updatedOrder){
-        Order order = orderRepository.findById(updatedOrder.getOrderId()).orElseThrow(OrderNotFoundException::new);
+        Order order = orderRepository.findById(updatedOrder.getId()).orElseThrow(OrderNotFoundException::new);
         orderRepository.save(order);
     }
 
     public void deleteOrderById(Long orderId){
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
-        orderRepository.deleteById(order.getOrderId());
+        orderRepository.deleteById(order.getId());
     }
 
     public Order findOrderById(Long orderId){

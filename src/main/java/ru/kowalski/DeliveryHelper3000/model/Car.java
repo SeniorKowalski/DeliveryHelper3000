@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
+@Table(name = "car")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,24 +26,19 @@ public class Car {
     @Column(name = "car_number")
     private String carNumber;
 
-    @Min(value = 1, message = "Вместимость машины должна быть больше нуля")
+    @Min(value = 1, message = "Вместимость машины (в лотках) должна быть больше нуля")
     @Column(name = "car_capacity")
     private int carCapacity;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "car", cascade = CascadeType.DETACH, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Order> orders;
 
-    public double calculateTotalProductVolume() {
-        if (orders == null) {
-            return 0;
-        }
-
-        double totalProductVolume = 0;
-        for (Order order : orders) {
-            for (Product product : order.getOrderedProducts()) {
-                totalProductVolume += (product.getProductSize() / 100) * product.getProductQuantity();
-            }
-        }
-        return totalProductVolume;
+    public void addOrder(Order order){
+        order.setCar(this);
+        orders.add(order);
+    }
+    public void deleteOrder(Order order){
+        orders.remove(order);
+        order.setCar(null);
     }
 }

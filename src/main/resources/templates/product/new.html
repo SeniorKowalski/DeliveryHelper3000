@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New product</title>
+</head>
+<body>
+
+<h2>Добавление продукта</h2>
+
+<form th:method="POST" th:action="@{/product}" th:object="${product}">
+    <br/>
+    <label for="productName">Введите название продукта:</label>
+    <input type="text" th:field="*{productName}" id="productName">
+    <div style="color:red" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}">Name error</div>
+    <br/>
+    <br/>
+    <label for="productPrice">Введите цену продукта:</label>
+    <input type="text" th:field="*{productPrice}" id="productPrice">
+    <div style="color:red" th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}">Price error</div>
+    <br/>
+    <br/>
+    <label for="productSize">Введите размер продукта, занимаемый им в лотке в %:</label>
+    <input type="text" th:field="*{productSize}" id="productSize">
+    <div style="color:red" th:if="${#fields.hasErrors('productSize')}" th:errors="*{productSize}">Size error</div>
+    <br/>
+
+    <input type="submit" value="Добавить!"/>
+    <br/>
+</form>
+</body>
+</html>

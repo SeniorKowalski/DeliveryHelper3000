@@ -10,7 +10,7 @@
 
 <div th:each="partner : ${partners}">
     <br/>
-    <a th:href="@{/partner/show/{id}(id=${partner.getId()})}"
+    <a th:href="@{/order/createOrder/{id}(id=${partner.getId()})}"
        th:text="${partner.getPartnerName() + ', ' + partner.getPartnerAddress()}"
        th:style="'font-weight: bold;'">partner</a>
 </div>
@@ -21,6 +21,12 @@
 <br/>
 <form th:action="@{/partner/new}">
     <input type="submit" value="Добавить торговую точку"/>
+</form>
+<br/>
+
+<br/>
+<form th:action="@{/partner/getProducts}">
+    <input type="submit" value="Продукты"/>
 </form>
 <br/>
 

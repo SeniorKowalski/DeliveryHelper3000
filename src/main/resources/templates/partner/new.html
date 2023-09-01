@@ -9,6 +9,7 @@
 <h2>Добавить торговую точку</h2>
 
 <form th:method="POST" th:action="@{/partner/new}" th:object="${partner}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <br/>
     <label for="partnerName">Введите название торговой точки:</label>
     <input type="text" th:field="*{partnerName}" id="partnerName">

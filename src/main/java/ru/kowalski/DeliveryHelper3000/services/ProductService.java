@@ -3,12 +3,12 @@ package ru.kowalski.DeliveryHelper3000.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.kowalski.DeliveryHelper3000.model.Product;
+import ru.kowalski.DeliveryHelper3000.model.SelectedProductDTO;
 import ru.kowalski.DeliveryHelper3000.repository.ProductRepository;
 import ru.kowalski.DeliveryHelper3000.util.ProductNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product findProductById(Long id){
+    public Product getProductById(Long id){
         return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
     }
 
@@ -30,8 +30,7 @@ public class ProductService {
     }
 
     public void deleteProductById(Long id){
-        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-        productRepository.deleteById(product.getProductId());
+        productRepository.deleteById(id);
     }
 
     public void updateProductById(Long id){
@@ -50,5 +49,14 @@ public class ProductService {
             products.add(productRepository.findById(productId).orElseThrow(ProductNotFoundException::new));
         }
         return products;
+    }
+
+    public List<SelectedProductDTO> getProductsInDTO(){
+        List<Product> products = getAllProducts();
+        List<SelectedProductDTO> productsDTO = new ArrayList<>();
+        for (Product product: products){
+            productsDTO.add(new SelectedProductDTO(product.getProductId(), product.getProductName()));
+        }
+        return productsDTO;
     }
 }

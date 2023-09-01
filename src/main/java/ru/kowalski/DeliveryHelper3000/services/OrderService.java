@@ -37,6 +37,10 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public void createOrder(Order order){
+        orderRepository.save(order);
+    }
+
     public void updateOrder(Order updatedOrder){
         Order order = orderRepository.findById(updatedOrder.getId()).orElseThrow(OrderNotFoundException::new);
         orderRepository.save(order);

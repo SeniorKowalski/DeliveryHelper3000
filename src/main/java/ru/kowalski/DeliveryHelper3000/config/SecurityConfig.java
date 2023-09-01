@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/auth/login");
         http.authenticationProvider(authenticationProvider());
+        http.csrf().disable();
         return http.build();
     }
 

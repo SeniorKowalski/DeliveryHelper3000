@@ -1,8 +1,6 @@
 package ru.kowalski.DeliveryHelper3000.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -13,6 +11,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "partners")
 @Data
 @Table(name = "person")
 public class Person {
@@ -47,5 +46,11 @@ public class Person {
         partner.setPerson(null);
     }
 
-
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

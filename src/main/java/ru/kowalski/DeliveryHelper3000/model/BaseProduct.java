@@ -9,11 +9,11 @@ import javax.validation.constraints.*;
 
 
 @Entity
-@Table(name = "product")
+@Table(name = "base_products")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class BaseProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,22 +29,10 @@ public class Product {
     @Column(name = "product_price")
     private Double productPrice;
 
-    @Min(value = 1, message = "Цена продуктов должна быть больше нуля")
-    @Column(name = "product_sum")
-    private Double productSum;
-
     @NotNull(message = "Нужно указать размер продукта")
     @Min(value = 1, message = "Размер продуктов в % должен быть больше нуля")
     @Max(value = 100, message = "Размер продуктов в % не может превышать 100")
     @Column(name = "product_size")
     private Double productSize;
-
-//    @Min(value = 1, message = "Количество продуктов должно быть больше нуля")
-    @Column(name = "product_quantity")
-    private int productQuantity;
-
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
 
 }

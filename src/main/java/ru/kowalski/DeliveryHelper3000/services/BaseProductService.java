@@ -14,20 +14,20 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class BaseProductService {
 
-    private final ProductRepository productRepository;
+    private final BaseProductRepository productRepository;
 //    private final OrderService orderService;
 
-    public List<Product> getAllProducts(){
+    public List<BaseProduct> getAllProducts(){
         return productRepository.findAll();
     }
 
-    public Product getProductById(long id){
+    public BaseProduct getProductById(long id){
         return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
     }
 
-    public void createNewProduct(Product product){
+    public void createNewProduct(BaseProduct product){
         productRepository.save(product);
     }
 
@@ -36,7 +36,7 @@ public class ProductService {
     }
 
     public void updateProductById(long id){
-        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        BaseProduct product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         productRepository.save(product);
     }
 
@@ -45,8 +45,8 @@ public class ProductService {
 //    }
     //TODO убрать цикличную зависимость
 
-    public List<Product> getProductsByIds(List<Long> productIds) {
-        List<Product> products = new ArrayList<>();
+    public List<BaseProduct> getProductsByIds(List<Long> productIds) {
+        List<BaseProduct> products = new ArrayList<>();
         for (long productId : productIds) {
             products.add(productRepository.findById(productId).orElseThrow(ProductNotFoundException::new));
         }
@@ -54,16 +54,16 @@ public class ProductService {
     }
 
     public List<SelectedProductDTO> getProductsInDTO(){
-        List<Product> products = getAllProducts();
+        List<BaseProduct> products = getAllProducts();
         List<SelectedProductDTO> productsDTO = new ArrayList<>();
-        for (Product product: products){
+        for (BaseProduct product: products){
             productsDTO.add(new SelectedProductDTO(product.getProductId(), product.getProductName()));
         }
         return productsDTO;
     }
 
     public SelectedProductDTO getTempProductDTO(long id){
-        Product product = getProductById(id);
+        BaseProduct product = getProductById(id);
         return new SelectedProductDTO(product.getProductId(), product.getProductName());
     }
 }

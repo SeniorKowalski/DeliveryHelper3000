@@ -10,4 +10,5 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
     List<Order> findOrdersByPartnerId(Long id);
+    List<Order> findOrdersByActive(Boolean isActive);
 }

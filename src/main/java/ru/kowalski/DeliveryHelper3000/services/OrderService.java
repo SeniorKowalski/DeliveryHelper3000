@@ -8,8 +8,13 @@ import ru.kowalski.DeliveryHelper3000.model.Product;
 import ru.kowalski.DeliveryHelper3000.repository.OrderRepository;
 import ru.kowalski.DeliveryHelper3000.util.OrderNotFoundException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +25,7 @@ public class OrderService {
     private final ProductService productService;
     private final CarService carService;
 
-    public void createNewOrder(Long partnerId, List<Long> productIds, LocalDateTime deliveryTimeWindowStart, LocalDateTime deliveryTimeWindowEnd){
+    public void createNewOrder(Long partnerId, List<Long> productIds, LocalDateTime deliveryTimeWindowStart, LocalDateTime deliveryTimeWindowEnd) {
 
         Order order = new Order();
 
@@ -37,28 +42,55 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public void createOrder(Order order){
+    public void createOrder(Order order) {
         orderRepository.save(order);
     }
 
-    public void updateOrder(Order updatedOrder){
+    public void updateOrder(Order updatedOrder) {
         Order order = orderRepository.findById(updatedOrder.getId()).orElseThrow(OrderNotFoundException::new);
         orderRepository.save(order);
     }
 
-    public void deleteOrderById(Long orderId){
+    public void deleteOrderById(long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
         orderRepository.deleteById(order.getId());
     }
 
-    public Order findOrderById(Long orderId){
+    public Order findOrderById(long orderId) {
         return orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
     }
 
-    public List<Order> findAllOrdersByPartnerId(Long partnerId){
+    public List<Order> findAllOrdersByPartnerId(long partnerId) {
         return partnerService.findPartnerById(partnerId).getOrders();
     }
 
+    public Order findLastPartnersOrder(long partnerId) {
+        List<Order> orders = findAllOrdersByPartnerId(partnerId);
+        if (!orders.isEmpty()) {
+            return orders.get(orders.size() - 1);
+        }
+        return null;
+    }
 
+    public Order createNewOrder(Partner currentPartner, Product product) {
+        Order order = new Order();
+        order.setPartner(currentPartner);
+        order.addProductToOrder(product);
+        order.setOrderDateTime(LocalDateTime.now());
+        return order;
+    }
 
+    public List<Order> getAllActiveOrders() {
+        return orderRepository.findOrdersByActive(true);
+    }
+
+    public List<Order> getOrdersByDeliveryDate() {
+        LocalDate todayDate = LocalDateTime.now().toLocalDate();
+        return orderRepository.findAll().stream().filter(order -> Objects.equals(order.getDeliveryTimeWindowStart().toLocalDate(), todayDate)).collect(Collectors.toList());
+    }
+
+    public Optional<Order> findTodayFirstOrder(List<Order> activeOrders) {
+        return activeOrders.stream()
+                .min(Comparator.comparing(Order::getDeliveryTimeWindowStart));
+    }
 }

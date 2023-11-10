@@ -13,12 +13,16 @@
     <a th:text="${person.getId() + ', ' + person.getEmail()}"
        th:style="'font-weight: bold;'">person</a>
 </div>
-<hr/>
+<br/>
+<form th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
 
+<hr/>
 
 <div th:each="product : ${products}">
     <br/>
-    <a th:text="${product.getProductName() + ' - ' + product.getProductPrice() + ' рублей. Размер: ' + product.getProductSize()}"
+    <a th:text="${product.getProductName() + ' - ' + product.getProductPrice() + ' рублей.'}"
        th:style="'font-weight: bold;'">product</a>
 </div>
 <br/>
@@ -27,9 +31,9 @@
 </form>
 <br/>
 <hr/>
-<div th:each="car : ${cars}">
+<div th:each="car : ${allCars}">
     <br/>
-    <a th:text="${car.getCarNumber() + ' - ' + car.getCarCapacity() + ' лотков.'}"
+    <a th:text="${car.getCarNumber() + '. количество лотков - ' + car.getCarCapacity()}"
        th:style="'font-weight: bold;'">car</a>
 </div>
 <br/>
@@ -38,6 +42,47 @@
 </form>
 <br/>
 <hr/>
+
+<h2>Заказы на сегодня:</h2>
+<div th:each="partner : ${partners}">
+    <br/>
+    <a th:text="${partner.getPartnerName() + ', ' + partner.getPartnerAddress()}"
+       th:style="'font-weight: bold;'">orders</a>
+</div>
+
+<hr/>
+<div>
+    <div th:if="${freeCars}">
+        <h3>Укажите данные для построения маршрута</h3>
+        <hr/>
+        <form th:method="POST" th:action="@{/admin/route}" th:object="${car}">
+            <label for="car">Выберите автомобиль</label>
+            <br/>
+            <select id="car"
+
+                    th:field="*{carId}">
+                <option th:each="car : ${freeCars}"
+                        th:value="${car.getCarId()}"
+                        th:text="${car.getCarNumber()}">
+                </option>
+            </select>
+            <hr/>
+            <label for="startTime">Укажите время выезда автомобиля со склада:</label>
+            <input type="datetime-local" th:name="startTime" id="startTime">
+
+            <input type="submit" value="Рассчитать маршрут!"/>
+        </form>
+    </div>
+
+    <div th:unless="${freeCars}">
+        <h2>Нет свободных машин</h2>
+    </div>
+</div>
+<div th:each="partner : ${route}">
+    <br/>
+    <a th:text="${partner.getPartnerAddress()}"
+       th:style="'font-weight: bold;'">route</a>
+</div>
 
 <br/>
 <!--<form th:action="@{/partner/new}">-->

@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "car")
@@ -33,12 +34,29 @@ public class Car {
     @OneToMany(mappedBy = "car", cascade = CascadeType.DETACH, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Order> orders;
 
-    public void addOrder(Order order){
+    public void addOrder(Order order) {
         order.setCar(this);
         orders.add(order);
     }
-    public void deleteOrder(Order order){
+
+    public void deleteOrder(Order order) {
         orders.remove(order);
         order.setCar(null);
+    }
+
+    public Optional<Order> getLastOrderOfThisCar() {
+        if (!orders.isEmpty()) {
+            return Optional.of(orders.get(orders.size() - 1));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "carId=" + carId +
+                ", carNumber='" + carNumber + '\'' +
+                ", carCapacity=" + carCapacity +
+                '}';
     }
 }

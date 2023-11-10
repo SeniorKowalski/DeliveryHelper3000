@@ -1,8 +1,6 @@
 package ru.kowalski.DeliveryHelper3000.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -13,6 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Partner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +42,16 @@ public class Partner {
 
     @OneToMany(mappedBy = "partner", cascade = CascadeType.DETACH, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Order> orders;
+
+    @Override
+    public String toString() {
+        return "Partner{" +
+                "id=" + id +
+                ", partnerName='" + partnerName + '\'' +
+                ", partnerAddress='" + partnerAddress + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", timeForDeliveryInMinutes=" + timeForDeliveryInMinutes +
+                '}';
+    }
 }

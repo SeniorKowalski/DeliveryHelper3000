@@ -1,6 +1,5 @@
 package ru.kowalski.DeliveryHelper3000.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

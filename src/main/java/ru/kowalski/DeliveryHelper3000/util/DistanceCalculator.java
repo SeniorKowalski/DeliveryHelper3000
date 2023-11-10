@@ -1,4 +1,6 @@
 package ru.kowalski.DeliveryHelper3000.util;
+
+import org.springframework.stereotype.Component;
 import ru.kowalski.DeliveryHelper3000.model.Order;
 import ru.kowalski.DeliveryHelper3000.model.Partner;
 
@@ -12,20 +14,25 @@ import java.util.Set;
 
 import static java.lang.Math.*;
 
+@Component
 public class DistanceCalculator {
 
     private static final int EARTH_RADIUS_KM = 6371; // Радиус Земли в километрах
     private static final double START_POINT_LATITUDE = 46.3438095; // Широта стартовой точки
     private static final double START_POINT_LONGITUDE = 48.0376301; // Долгота стартовой точки
+    private static final String START_POINT_NAME = "Склад"; // Название стартовой точки
+    private static final String START_POINT_ADDRESS = "ул.Челюскинцев д.18"; // Адрес стартовой точки
     //TODO сделать изменяемым
     private static final int LOADING_TIME_PER_POINT_MINUTES = 15; // Время нахождения на одной торговой точке
 
 
     // Метод для составления маршрутного листа с помощью алгоритма "ближайшего соседа" с учетом времени доставки
-    public List<Partner> createRouteWithTime(List<Order> orders) {
+    public List<Partner> createRouteWithTime(List<Order> orders, LocalDateTime timeOfDeliverySrarts) {
 
         // Устанавливаем склад в качестве стартовой точки
         Partner startingPoint = new Partner();
+        startingPoint.setPartnerName(START_POINT_NAME);
+        startingPoint.setPartnerAddress(START_POINT_ADDRESS);
         startingPoint.setLatitude(START_POINT_LATITUDE);
         startingPoint.setLongitude(START_POINT_LONGITUDE);
 
@@ -41,17 +48,14 @@ public class DistanceCalculator {
         remainingPartners.remove(startingPoint);
 
         // Объявляем время выезда со склада
-        LocalTime timeOfStartDeliveries = LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.MINUTES);
-        //TODO переделать на вводимое значение
-
-        int currentTime = convertLocalTimeToInt(timeOfStartDeliveries);
+        int currentTime = convertLocalTimeToInt(timeOfDeliverySrarts.toLocalTime().truncatedTo(ChronoUnit.MINUTES));
 
         // Находим ближайшую точку для доставки на каждой итерации
         while (!remainingPartners.isEmpty()) {
             Partner currentPoint = route.get(route.size() - 1);
             Partner nearestNeighbor = findNearestNeighbor(currentPoint, remainingPartners);
 
-
+            //TODO изменить способ получения (не обязательно)
             Order tempOrder = nearestNeighbor.getOrders().get(nearestNeighbor.getOrders().size()-1);
 
             // Рассчитываем время доставки для текущей точки
@@ -87,7 +91,7 @@ public class DistanceCalculator {
                 currentTime += deliveryTimeMinutes;
             } else {
                 // Если не укладываемся в ограничения, перемещаемся к следующей точке (ближайшей)
-                continue;
+                remainingPartners.remove(nearestNeighbor);
             }
         }
 

@@ -1,168 +1,76 @@
 package ru.kowalski.DeliveryHelper3000.controller;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kowalski.DeliveryHelper3000.model.*;
+import ru.kowalski.DeliveryHelper3000.services.BaseProductService;
 import ru.kowalski.DeliveryHelper3000.services.OrderService;
 import ru.kowalski.DeliveryHelper3000.services.PartnerService;
 import ru.kowalski.DeliveryHelper3000.services.ProductService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
-
-//@RestController
-//@RequestMapping("/api/orders")
-//@RequiredArgsConstructor
-//public class OrderController {
-//
-//    private final ProductService productService;
-//    private final OrderService orderService;
-//    private final PartnerService partnerService;
-//
-//    // Метод для получения всех продуктов в формате JSON
-//    @GetMapping("/products")
-//    public List<SelectedProductDTO> getAllProducts() {
-//        return productService.getProductInDTO();
-//    }
-//
-//    // Метод для создания заказа с выбранными продуктами
-//    @PostMapping("/{partnerId}")
-//    public ResponseEntity<String> createOrder(@PathVariable Long partnerId, @RequestBody Map<Long, Integer> selectedProducts) {
-//        List<Partner> partners = partnerService.findAllPartnersByPersonId();
-//        Partner currentPartner = partners.stream()
-//                .filter(partner -> partner.getId().equals(partnerId))
-//                .findFirst()
-//                .orElse(null);
-//
-//        if (currentPartner == null) {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.");
-//        }
-//
-//        Order order = new Order();
-//        order.setPartner(currentPartner);
-//
-//        for (Map.Entry<Long, Integer> entry : selectedProducts.entrySet()) {
-//            Long productId = entry.getKey();
-//            Integer quantity = entry.getValue();
-//
-//            Product product = productService.getProductById(productId);
-//            if (product == null) {
-//                return ResponseEntity.badRequest().body("Invalid product ID: " + productId);
-//            }
-//
-//            product.setProductQuantity(quantity);
-//            order.addProductToOrder(product);
-//        }
-//
-//        orderService.createOrder(order);
-//
-//        return ResponseEntity.ok("Order created successfully");
-//    }
-//}
-
-//@Controller
-//@RequestMapping("/order")
-//@RequiredArgsConstructor
-//public class OrderController {
-//
-//    private final ProductService productService;
-//    private final OrderService orderService;
-//    private final PartnerService partnerService;
-//
-//    @GetMapping("/createOrder/{partnerId}")
-//    public String createOrderPage(@PathVariable("partnerId") Long partnerId, Model model) {
-//        model.addAttribute("partner", partnerService.findPartnerById(partnerId));
-//        model.addAttribute("allProducts", productService.getAllProducts());
-//        return "/order/CreateOrder";
-//    }
-//
-//    @GetMapping("/products")
-//    public List<SelectedProductDTO> getAllProducts() {
-//        return productService.getProductInDTO();
-//    }
-//
-//    @PostMapping("/createOrder")
-//    public ResponseEntity<String> createOrder(@RequestParam Long partnerId, @RequestParam String selectedProductsJson) {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        List<Product> selectedProducts;
-//        try {
-//            selectedProducts = objectMapper.readValue(selectedProductsJson, new TypeReference<>() {
-//            });
-//        } catch (JsonProcessingException e) {
-//            return ResponseEntity.badRequest().body("Error parsing selected products.");
-//        }
-//
-//        List<Partner> partners = partnerService.findAllPartnersByPersonId();
-//        Partner currentPartner = partners.stream()
-//                .filter(partner -> partner.getId().equals(partnerId))
-//                .findFirst()
-//                .orElse(null);
-//
-//        if (currentPartner == null) {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.");
-//        }
-//
-//        Order order = new Order();
-//        order.setPartner(currentPartner);
-//
-//        for (Product selectedProduct : selectedProducts) {
-//            selectedProduct.setOrder(order);
-//            order.getOrderedProducts().add(selectedProduct);
-//        }
-//
-//        orderService.createOrder(order);
-//
-//        return ResponseEntity.ok("Order created successfully");
-//    }
-//}
 
 @RestController
-@RequestMapping("/api/orders")
 @RequiredArgsConstructor
 public class OrderRestController {
 
     private final ProductService productService;
+    private final BaseProductService baseProductService;
     private final OrderService orderService;
     private final PartnerService partnerService;
 
-    @PostMapping("/{partnerId}")
-    public ResponseEntity<String> createOrder(@PathVariable Long partnerId, @RequestBody List<SelectedProductDTO> selectedProducts) {
+    @Transactional
+    @PostMapping("/api/orders/{partnerId}/{productId}")
+    public ResponseEntity<String> addProductToOrder(@PathVariable Long partnerId, @PathVariable Long productId, SelectedProductDTO selectedProduct, HttpServletResponse response) throws IOException {
+        // Проверка что id партнёра, указанный в юрле принадлежит текущему пользователю.
         List<Partner> partners = partnerService.findAllPartnersByPersonId();
         Partner currentPartner = partners.stream()
                 .filter(partner -> partner.getId().equals(partnerId))
                 .findFirst()
                 .orElse(null);
-        System.out.println(partners);
 
         if (currentPartner == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access to this page denied.");
         }
 
-        Order order = new Order();
-        order.setPartner(currentPartner);
+        // Если у currentPartner есть getLastOrder и он не isSubmitted, то добавляем продукт в него, иначе создаём новый Order
+        BaseProduct tempProduct = baseProductService.getProductById(productId);
+        Product product = new Product();
+        product.setProductName(tempProduct.getProductName());
+        product.setProductPrice(tempProduct.getProductPrice());
+        product.setProductSum(tempProduct.getProductPrice() * selectedProduct.getQuantity());
+        product.setProductSize(tempProduct.getProductSize() * selectedProduct.getQuantity());
+        product.setProductQuantity(selectedProduct.getQuantity());
+        productService.createNewProduct(product);
 
-        for (SelectedProductDTO selectedProduct : selectedProducts) {
-            Product product = productService.getProductById(selectedProduct.getProductId());
-            if (product == null) {
-                return ResponseEntity.badRequest().body("Invalid product ID: " + selectedProduct.getProductId());
+        if (orderService.findLastPartnersOrder(currentPartner.getId()) != null) {
+            if (!orderService.findLastPartnersOrder(currentPartner.getId()).getSubmitted()) {
+                Order tempOrder = orderService.findLastPartnersOrder(currentPartner.getId());
+                tempOrder.setOrderDateTime(LocalDateTime.now());
+                tempOrder.addProductToOrder(product);
+            } else {
+                Order order = orderService.createNewOrder(currentPartner, product);
+                orderService.createOrder(order);
             }
-
-            product.setProductQuantity(selectedProduct.getQuantity());
-            order.addProductToOrder(product);
+        } else {
+            Order order = orderService.createNewOrder(currentPartner, product);
+            orderService.createOrder(order);
         }
 
-        orderService.createOrder(order);
-
-        return ResponseEntity.ok("Order created successfully");
+        response.sendRedirect("/order/createOrder/" + currentPartner.getId());
+        return ResponseEntity.ok("Product added to order successfully");
     }
+
+
+
 }

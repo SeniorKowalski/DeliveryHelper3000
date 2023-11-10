@@ -35,6 +35,12 @@ public class PartnerService {
                 .findAny().orElseThrow(PartnerNotFoundException::new);
     }
 
+    public Partner getPartnerById(long partnerId){
+        return partnerRepository.findAll().stream()
+                .filter(partner -> Objects.equals(partner.getId(), partnerId))
+                .findAny().orElseThrow(PartnerNotFoundException::new);
+    }
+
     public List <Partner> findAllPartnersByPersonId(){
         Person person = getCurrentPerson();
         return partnerRepository.findAllByPersonId(person.getId());

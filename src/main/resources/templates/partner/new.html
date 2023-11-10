@@ -9,7 +9,7 @@
 <h2>Добавить торговую точку</h2>
 
 <form th:method="POST" th:action="@{/partner/new}" th:object="${partner}">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<!--    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
     <br/>
     <label for="partnerName">Введите название торговой точки:</label>
     <input type="text" th:field="*{partnerName}" id="partnerName">
@@ -29,6 +29,11 @@
     <label for="longitude">Введите координаты торговой точки (долготу):</label>
     <input type="text" th:field="*{longitude}" id="longitude">
     <div style="color:red" th:if="${#fields.hasErrors('longitude')}" th:errors="*{longitude}">Longitude error</div>
+    <br/>
+    <br/>
+    <label for="timeForDeliveryInMinutes">Введите время доставки до точки в минутах:</label>
+    <input type="number" th:field="*{timeForDeliveryInMinutes}" min="0" id="timeForDeliveryInMinutes">
+    <div style="color:red" th:if="${#fields.hasErrors('timeForDeliveryInMinutes')}" th:errors="*{timeForDeliveryInMinutes}">TimeForDeliveryInMinutes error</div>
     <br/>
 
     <input type="submit" value="Добавить!"/>

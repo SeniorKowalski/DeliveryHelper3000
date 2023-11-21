@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
 
+// Класс-модель для автомобилей доставки
+
 @Entity
 @Table(name = "car")
 @Data

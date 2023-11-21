@@ -1,11 +1,16 @@
 package ru.kowalski.DeliveryHelper3000.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
+
+// Класс-модель торговых точек пользователя
 
 @Entity
 @Data

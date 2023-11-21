@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.kowalski.DeliveryHelper3000.services.PersonDetailsService;
 
+// Конфигурация Spring-security
 
 @EnableWebSecurity
 @RequiredArgsConstructor

@@ -10,6 +10,8 @@ import ru.kowalski.DeliveryHelper3000.services.BaseProductService;
 import ru.kowalski.DeliveryHelper3000.services.OrderService;
 import ru.kowalski.DeliveryHelper3000.services.PartnerService;
 
+// Контроллер для операций с завказами
+
 @Controller
 @RequestMapping("/order")
 @RequiredArgsConstructor

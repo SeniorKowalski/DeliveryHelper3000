@@ -1,6 +1,8 @@
 package ru.kowalski.DeliveryHelper3000.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -8,10 +10,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+// Класс-модель пользователя приложения
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "partners")
 @Data
 @Table(name = "person")
 public class Person {

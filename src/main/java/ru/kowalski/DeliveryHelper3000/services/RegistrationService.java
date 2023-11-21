@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kowalski.DeliveryHelper3000.model.Person;
 import ru.kowalski.DeliveryHelper3000.repository.PersonRepository;
 
+// Сервис для регистрации пользователей
 
 @Service
 @RequiredArgsConstructor

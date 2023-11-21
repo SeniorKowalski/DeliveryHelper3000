@@ -1,7 +1,6 @@
 package ru.kowalski.DeliveryHelper3000.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +12,7 @@ import ru.kowalski.DeliveryHelper3000.security.PersonDetails;
 import java.util.Locale;
 import java.util.Optional;
 
+// Сервис для поиска пользователя, нужный для аутентификации
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +28,5 @@ public class PersonDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
 
         return new PersonDetails(person.get());
-}
+    }
 }

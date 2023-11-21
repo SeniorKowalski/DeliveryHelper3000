@@ -1,10 +1,14 @@
 package ru.kowalski.DeliveryHelper3000.util;
 
+import org.springframework.stereotype.Component;
 import ru.kowalski.DeliveryHelper3000.model.Order;
 import ru.kowalski.DeliveryHelper3000.model.Product;
 
 import java.util.List;
 
+// Класс-утилита для рассчёта объёма товаров
+
+@Component
 public class VolumeCalculator {
 
     // Считаем объём, занимаемый всеми продуктами в списке заказов

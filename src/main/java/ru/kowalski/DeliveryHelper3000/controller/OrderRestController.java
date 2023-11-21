@@ -1,6 +1,5 @@
 package ru.kowalski.DeliveryHelper3000.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +18,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// Rest-контроллер для добавления товара к заказу
 
 @RestController
 @RequiredArgsConstructor
@@ -70,7 +70,6 @@ public class OrderRestController {
         response.sendRedirect("/order/createOrder/" + currentPartner.getId());
         return ResponseEntity.ok("Product added to order successfully");
     }
-
 
 
 }

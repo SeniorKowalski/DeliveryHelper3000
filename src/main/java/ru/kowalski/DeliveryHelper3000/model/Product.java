@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+// Класс-модель товара, используемая для заказов
 
 @Entity
 @Table(name = "product")
@@ -39,7 +40,7 @@ public class Product {
     @Column(name = "product_size")
     private Double productSize;
 
-//    @Min(value = 1, message = "Количество продуктов должно быть больше нуля")
+    //    @Min(value = 1, message = "Количество продуктов должно быть больше нуля")
     @Column(name = "product_quantity")
     private int productQuantity;
 

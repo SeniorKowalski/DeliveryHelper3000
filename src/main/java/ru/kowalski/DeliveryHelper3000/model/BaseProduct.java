@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+// Класс-модель для товаров
 
 @Entity
 @Table(name = "base_products")

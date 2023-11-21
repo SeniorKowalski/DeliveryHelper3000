@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.kowalski.DeliveryHelper3000.model.BaseProduct;
 import ru.kowalski.DeliveryHelper3000.services.BaseProductService;
 
+// Контроллер для операций с товарами
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/product")

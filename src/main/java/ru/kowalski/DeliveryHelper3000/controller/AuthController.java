@@ -13,6 +13,8 @@ import ru.kowalski.DeliveryHelper3000.util.PersonValidator;
 
 import javax.validation.Valid;
 
+// Контроллер для авторизации
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -40,12 +42,6 @@ public class AuthController {
             return "/auth/registration";
 
         registrationService.register(person);
-        //создаём Relative пользователя при регистрации
-//        Relative personRelative = new Relative();
-//        personRelative.setPersonId(person.getId());
-//        personRelative.setRootNode(true);
-//        personRelative.setFirstName("Это вы");
-//        relativeService.addYourselfAsRelative(personRelative);
 
         return "redirect:/auth/login";
     }

@@ -8,9 +8,9 @@ import org.springframework.validation.Validator;
 import ru.kowalski.DeliveryHelper3000.model.Person;
 import ru.kowalski.DeliveryHelper3000.services.PersonDetailsService;
 
-
 import java.util.Locale;
 
+// Класс-утилита для валидации данных пользователя при регистрации
 
 @Component
 public class PersonValidator implements Validator {

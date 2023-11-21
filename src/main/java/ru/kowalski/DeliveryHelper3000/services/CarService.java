@@ -2,16 +2,18 @@ package ru.kowalski.DeliveryHelper3000.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.kowalski.DeliveryHelper3000.exceptions.CarNotFoundException;
 import ru.kowalski.DeliveryHelper3000.model.Car;
 import ru.kowalski.DeliveryHelper3000.model.Order;
 import ru.kowalski.DeliveryHelper3000.repository.CarRepository;
-import ru.kowalski.DeliveryHelper3000.util.CarNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+// Сервис для операций с автомобилями доставки в БД
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +43,7 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public List<Order> findOrdersByCarId(long carId){
+    public List<Order> findOrdersByCarId(long carId) {
         if (carRepository.findById(carId).isPresent()) {
             if (!carRepository.findById(carId).get().getOrders().isEmpty())
                 return carRepository.findById(carId).get().getOrders();

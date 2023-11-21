@@ -10,6 +10,8 @@ import ru.kowalski.DeliveryHelper3000.util.DistanceCalculator;
 import java.util.List;
 import java.util.Optional;
 
+// Сервис для администрирования приложения
+
 @Service
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ROLE_ADMIN')")

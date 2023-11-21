@@ -2,11 +2,11 @@ package ru.kowalski.DeliveryHelper3000.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.kowalski.DeliveryHelper3000.exceptions.OrderNotFoundException;
 import ru.kowalski.DeliveryHelper3000.model.Order;
 import ru.kowalski.DeliveryHelper3000.model.Partner;
 import ru.kowalski.DeliveryHelper3000.model.Product;
 import ru.kowalski.DeliveryHelper3000.repository.OrderRepository;
-import ru.kowalski.DeliveryHelper3000.util.OrderNotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +16,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+// Сервис для взаимодейтвия с БД заказов
+
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -23,7 +25,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final PartnerService partnerService;
     private final ProductService productService;
-    private final CarService carService;
 
     public void createNewOrder(Long partnerId, List<Long> productIds, LocalDateTime deliveryTimeWindowStart, LocalDateTime deliveryTimeWindowEnd) {
 

@@ -16,27 +16,27 @@
     <div style="color:red" th:if="${#fields.hasErrors('partnerName')}" th:errors="*{partnerName}">Name error</div>
     <br/>
     <br/>
-    <label for="partnerName">Введите адрес торговой точки:</label>
+    <label for="partnerName">Введите адрес торговой точки в формате "город, улица, дом" (Астрахань, Боевая, 52):</label>
     <input type="text" th:field="*{partnerAddress}" id="partnerAddress">
-    <div style="color:red" th:if="${#fields.hasErrors('partnerAddress')}" th:errors="*{partnerAddress}">Name error</div>
+    <div style="color:red" th:if="${#fields.hasErrors('partnerAddress')}" th:errors="*{partnerAddress}">Address error</div>
     <br/>
-    <br/>
-    <label for="latitude">Введите координаты торговой точки (широту):</label>
-    <input type="text" th:field="*{latitude}" id="latitude">
-    <div style="color:red" th:if="${#fields.hasErrors('latitude')}" th:errors="*{latitude}">Latitude error</div>
-    <br/>
-    <br/>
-    <label for="longitude">Введите координаты торговой точки (долготу):</label>
-    <input type="text" th:field="*{longitude}" id="longitude">
-    <div style="color:red" th:if="${#fields.hasErrors('longitude')}" th:errors="*{longitude}">Longitude error</div>
-    <br/>
-    <br/>
-    <label for="timeForDeliveryInMinutes">Введите время доставки до точки в минутах:</label>
-    <input type="number" th:field="*{timeForDeliveryInMinutes}" min="0" id="timeForDeliveryInMinutes">
-    <div style="color:red" th:if="${#fields.hasErrors('timeForDeliveryInMinutes')}" th:errors="*{timeForDeliveryInMinutes}">TimeForDeliveryInMinutes error</div>
-    <br/>
+<!--    <br/>-->
+<!--    <label for="latitude">Введите координаты торговой точки (широту):</label>-->
+<!--    <input type="text" th:field="*{latitude}" id="latitude">-->
+<!--    <div style="color:red" th:if="${#fields.hasErrors('latitude')}" th:errors="*{latitude}">Latitude error</div>-->
+<!--    <br/>-->
+<!--    <br/>-->
+<!--    <label for="longitude">Введите координаты торговой точки (долготу):</label>-->
+<!--    <input type="text" th:field="*{longitude}" id="longitude">-->
+<!--    <div style="color:red" th:if="${#fields.hasErrors('longitude')}" th:errors="*{longitude}">Longitude error</div>-->
+<!--    <br/>-->
+<!--    <br/>-->
+<!--    <label for="timeForDeliveryInMinutes">Введите время доставки до точки в минутах:</label>-->
+<!--    <input type="number" th:field="*{timeForDeliveryInMinutes}" min="0" id="timeForDeliveryInMinutes">-->
+<!--    <div style="color:red" th:if="${#fields.hasErrors('timeForDeliveryInMinutes')}" th:errors="*{timeForDeliveryInMinutes}">TimeForDeliveryInMinutes error</div>-->
+<!--    <br/>-->
 
-    <input type="submit" value="Добавить!"/>
+    <input type="submit" value="Зарегистрировать торговую точку"/>
     <br/>
 </form>
 </body>

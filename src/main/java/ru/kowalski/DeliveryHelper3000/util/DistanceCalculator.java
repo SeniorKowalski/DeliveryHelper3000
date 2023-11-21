@@ -14,20 +14,21 @@ import java.util.Set;
 
 import static java.lang.Math.*;
 
+// Класс-утилита для сортировки торговых точек по времени заказа и удалению друг от друга
+
 @Component
 public class DistanceCalculator {
 
     private static final int EARTH_RADIUS_KM = 6371; // Радиус Земли в километрах
-    private static final double START_POINT_LATITUDE = 46.3438095; // Широта стартовой точки
-    private static final double START_POINT_LONGITUDE = 48.0376301; // Долгота стартовой точки
+    public static final double START_POINT_LATITUDE = 46.342866; // Широта стартовой точки
+    public static final double START_POINT_LONGITUDE = 48.027576; // Долгота стартовой точки
     private static final String START_POINT_NAME = "Склад"; // Название стартовой точки
     private static final String START_POINT_ADDRESS = "ул.Челюскинцев д.18"; // Адрес стартовой точки
-    //TODO сделать изменяемым
     private static final int LOADING_TIME_PER_POINT_MINUTES = 15; // Время нахождения на одной торговой точке
 
 
     // Метод для составления маршрутного листа с помощью алгоритма "ближайшего соседа" с учетом времени доставки
-    public List<Partner> createRouteWithTime(List<Order> orders, LocalDateTime timeOfDeliverySrarts) {
+    public List<Partner> createRouteWithTime(List<Order> orders, LocalDateTime timeOfDeliveryStarts) {
 
         // Устанавливаем склад в качестве стартовой точки
         Partner startingPoint = new Partner();
@@ -38,7 +39,7 @@ public class DistanceCalculator {
 
         // получаем из списка заказов список торговых точек
         Set<Partner> remainingPartners = new HashSet<>();
-        for(Order order:orders){
+        for (Order order : orders) {
             remainingPartners.add(order.getPartner());
         }
         List<Partner> route = new ArrayList<>();
@@ -48,7 +49,7 @@ public class DistanceCalculator {
         remainingPartners.remove(startingPoint);
 
         // Объявляем время выезда со склада
-        int currentTime = convertLocalTimeToInt(timeOfDeliverySrarts.toLocalTime().truncatedTo(ChronoUnit.MINUTES));
+        int currentTime = convertLocalTimeToInt(timeOfDeliveryStarts.toLocalTime().truncatedTo(ChronoUnit.MINUTES));
 
         // Находим ближайшую точку для доставки на каждой итерации
         while (!remainingPartners.isEmpty()) {
@@ -56,7 +57,7 @@ public class DistanceCalculator {
             Partner nearestNeighbor = findNearestNeighbor(currentPoint, remainingPartners);
 
             //TODO изменить способ получения (не обязательно)
-            Order tempOrder = nearestNeighbor.getOrders().get(nearestNeighbor.getOrders().size()-1);
+            Order tempOrder = nearestNeighbor.getOrders().get(nearestNeighbor.getOrders().size() - 1);
 
             // Рассчитываем время доставки для текущей точки
             int deliveryTimeMinutes;
@@ -72,7 +73,7 @@ public class DistanceCalculator {
                 if (route.size() > 1) {
                     Partner previousPoint = route.get(route.size() - 2);
                     deliveryTimeMinutes += nearestNeighbor.getTimeForDeliveryInMinutes() - previousPoint.getTimeForDeliveryInMinutes();
-                    if (nearestNeighbor.equals(startingPoint)){
+                    if (nearestNeighbor.equals(startingPoint)) {
                         deliveryTimeMinutes += previousPoint.getTimeForDeliveryInMinutes();
                     }
                 }
@@ -131,12 +132,11 @@ public class DistanceCalculator {
         double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
         // Расстояние между точками в километрах
-        double distance = EARTH_RADIUS_KM * c;
-        return distance;
+        return EARTH_RADIUS_KM * c;
     }
 
     // Метод для конвертации из формата LocalTime в минуты (int)
-    private int convertLocalTimeToInt(LocalTime time){
+    private int convertLocalTimeToInt(LocalTime time) {
         int hours = time.getHour();
         int minutes = time.getMinute();
         return hours * 60 + minutes;

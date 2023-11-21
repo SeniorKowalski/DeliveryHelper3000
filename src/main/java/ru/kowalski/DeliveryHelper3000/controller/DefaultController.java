@@ -1,6 +1,5 @@
 package ru.kowalski.DeliveryHelper3000.controller;
 
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Collection;
+
+// Контроллер для определения стартовой страницы
 
 @Controller
 public class DefaultController {
